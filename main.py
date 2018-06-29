@@ -1,12 +1,15 @@
-from urllib.request import Request
-from urllib.request import urlopen
-from urllib.error import HTTPError
-from urllib.error import URLError
+from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
 from bs4 import BeautifulSoup
 from threading import Thread
-import time
+from time import sleep
 
-def doSoup(url):
+
+def makeDummySoup():
+    return BeautifulSoup("dummy html", "html.parser")
+
+
+def makeSoup(url):
     try:
         userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"
         req = Request(url, headers={'User-Agent': userAgent})  # На всякий случай пробуем маскироваться
@@ -15,17 +18,17 @@ def doSoup(url):
         return soup
     except HTTPError as e:
         print("При попытке открыть %s произошла ошибка %s..." % (url, e))
-        return BeautifulSoup("dummy html", "html.parser")
+        return makeDummySoup()
     except URLError as e:
-        time.sleep(10)
-        print("При попытке открыть %s произошла ошибка %s. Пробуем дальше!" % (url, e))
-        return doSoup(url)
+        print("При попытке открыть %s произошла ошибка %s. Ждем и пробуем дальше!" % (url, e))
+        sleep(10)
+        return makeSoup(url)
 
 
 print("--- СПбГУ -----")
 SPBU_SITE = "https://cabinet.spbu.ru/Lists/1k_EntryLists/"
 
-soup = doSoup(SPBU_SITE)
+soup = makeSoup(SPBU_SITE)
 
 # Поиск всех ID всех абитуриентов:
 # Поиск всех ячеек -- тегов вида <td id="f585917a-d7af-499d-8299-e83624aeb8b7" ...>
@@ -39,7 +42,7 @@ print("Найдено абитуриентов: %d." % abitCount)
 
 rowCount = len(soup.find_all("tr"))
 if abitCount != rowCount - 1:
-    print("Подозрительно: строчек в таблице %d, а должно быть %d!", rowCount, abitCount + 1)
+    print("Подозрительно: строчек в таблице %d, а должно быть %d!" % (rowCount, abitCount + 1))
 
 # Поиск всех конкурсов:
 # Для каждого студента находим ссылки вида
@@ -51,7 +54,7 @@ CONTESTS_SITE = "https://cabinet.spbu.ru/Lists/1k_EntryLists/data/%s.txt"
 
 def extractContests(abitId):
     abitContests[abitId] = set()
-    soup = doSoup(CONTESTS_SITE % abitId)
+    soup = makeSoup(CONTESTS_SITE % abitId)
     for a in soup.find_all("a"):
         if a.has_attr("href"):
             contestPage = a["href"]
