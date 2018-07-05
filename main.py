@@ -263,6 +263,8 @@ for contestPage, contestRows in contestLists.items():
     for row in contestRows:
         lists.append(row)
 
-with open("data.json", "w", encoding="utf-8") as f:
+lists = dict(enumerate(lists))
+
+with open("data-spbu.json", "w", encoding="utf-8") as f:
     print(json.dumps(lists, ensure_ascii=False, indent=2), file=f)  # TODO: параметры JSON норм?
     logInfo("JSON записан.")
