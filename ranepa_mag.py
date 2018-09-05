@@ -72,15 +72,15 @@ def findLinkToAbit(educationalPrograms):
                         abit[PROPERTY.CONTEST_TYPE] = visibleSoupToString(tds[statusIdx])
                         abit[PROPERTY.GRADES] = dict()
                         try:
-                            abit[PROPERTY.SUM] = int(visibleSoupToString(tds[sumIdx]))
+                            abit[PROPERTY.SUM] = float(visibleSoupToString(tds[sumIdx]))
                         except ValueError:
                             abit[PROPERTY.SUM] = None
                         for idx, subj in enumerate(subjects):
                             try:
-                                abit[PROPERTY.GRADES][subj] = int(visibleSoupToString(tds[subjectsBeginIdx + idx]))
+                                abit[PROPERTY.GRADES][subj] = float(visibleSoupToString(tds[subjectsBeginIdx + idx]))
                             except ValueError:
                                 abit[PROPERTY.GRADES][subj] = None
-                        abit[PROPERTY.EXTRA_BONUS] = int(visibleSoupToString(tds[individualBonusIdx]))
+                        abit[PROPERTY.EXTRA_BONUS] = float(visibleSoupToString(tds[individualBonusIdx]))
                         abit[PROPERTY.ORIGINAL] = visibleSoupToString(tds[originalIdx]) == "Оригинал"
 
                         abits.append(abit)
