@@ -58,7 +58,7 @@ def parseSite(link, additionalParameters):
 
     linkToAbit = findAbitsAsync(contestLinks, additionalParameters)
     for link, abits in linkToAbit.items():
-        writeJson({"link": link, "abits": abits}, "rggu-mag/", link[link.find("apply.rggu.ru"):])
+        writeJson({"link": link, "abits": abits}, "rggu-mag/", link)
 
 
 def main():

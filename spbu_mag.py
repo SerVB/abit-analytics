@@ -41,4 +41,4 @@ def main(contests=None):
     logInfo("Найдено записей: %d." % sum(map(len, contestLists.values())))
 
     for link, abits in contestLists.items():
-        writeJson({"link": link, "abits": abits}, "spbu-mag/", link[link.find("cabinet.spbu.ru"):] + ".json")
+        writeJson({"link": link, "abits": abits}, "spbu-mag/", link + ".json")

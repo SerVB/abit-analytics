@@ -129,6 +129,6 @@ def main(department=None):
     logInfo("Всего абитуриентов найдено: %s." % count)
 
     for link, abits in linkToAbit.items():
-        writeJson({"link": link, "abits": abits}, "ranepa-bach/", link[link.find("lk.ranepa.ru"):] + ".json")
+        writeJson({"link": link, "abits": abits}, "ranepa-bach/", link + ".json")
 
     logInfo("Json файлов записано: %s. Завершено." % len(linkToAbit))
