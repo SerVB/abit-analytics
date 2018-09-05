@@ -38,5 +38,4 @@ import rggu_mag; rggu_mag.main()
 # ----- МГУ -----
 
 # Запустить парсинг магистратуры МГУ для всех конкурсов
-
 import msu_mag; msu_mag.main()
