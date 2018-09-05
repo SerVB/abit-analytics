@@ -26,9 +26,7 @@ class PROPERTY:
     DEPARTMENT = "department"
 
 
-# Делает суп по ссылке.
-# Если не удается сделать за maxTimes раз, сообщает о неудаче и отдает пустой суп
-def makeSoup(url, title=None, time=1, maxTimes=3):
+def getSiteText(url, title=None, time=1, maxTimes=3):
     if time > maxTimes:
         message = "Не смог получить доступ к странице %s уже много раз (%d). Больше не буду пытаться."
         if title is None:
@@ -42,11 +40,9 @@ def makeSoup(url, title=None, time=1, maxTimes=3):
         userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"
         req = Request(url, headers={"User-Agent": userAgent})
         html = urlopen(req, context=ssl.SSLContext(ssl.PROTOCOL_SSLv23)).read().decode("utf-8")
-        soup = BeautifulSoup(html, "html.parser")
-        return soup
+        return html
     except (HTTPError, URLError) as e:
-        message = "При попытке открыть %s произошла ошибка %s. Жду и пробую дальше! " \
-                  "Осталось попыток: %d."
+        message = "При попытке открыть %s произошла ошибка %s. Жду и пробую дальше! Осталось попыток: %d."
         remainingTimes = maxTimes - time
         if title is None:
             message %= (url, e, remainingTimes)
@@ -55,7 +51,18 @@ def makeSoup(url, title=None, time=1, maxTimes=3):
         logWarning(message)
         if remainingTimes >= 1:
             sleep(1)
-        return makeSoup(url, title=title, time=time + 1, maxTimes=maxTimes)
+        return getSiteText(url, title=title, time=time + 1, maxTimes=maxTimes)
+
+
+# Делает суп по ссылке.
+# Если не удается сделать за maxTimes раз, сообщает о неудаче и отдает None
+def makeSoup(url, title=None, time=1, maxTimes=3):
+    html = getSiteText(url, title=title, maxTimes=maxTimes)
+    if html is None:
+        return None
+
+    soup = BeautifulSoup(html, "html.parser")
+    return soup
 
 
 def writeJson(jsonData, dirName, fileName):
