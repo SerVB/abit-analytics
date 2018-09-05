@@ -12,7 +12,7 @@
 # import ranepa_mag; ranepa_mag.main(department="Дальневосточный институт управления - филиал")
 
 # Запустить парсинг магистратуры РАНХиГС для всех филиалов
-# import ranepa_mag; ranepa_mag.main()
+import ranepa_mag; ranepa_mag.main()
 
 # ----- СПбГУ -----
 
@@ -25,7 +25,7 @@
 
 # Запустить парсинг магистратуры СПбГУ для всех конкурсов
 # (полный список конкурсов находится на одной странице, список получается быстро)
-# import spbu_mag; spbu_mag.main()
+import spbu_mag; spbu_mag.main()
 
 # Запустить парсинг магистратуры СПбГУ для конкретных конкурсов (точные относительные ссылки)
 # import spbu_mag; spbu_mag.main(contests={"list1_1_2_3151_1024_0.html"})
@@ -33,9 +33,10 @@
 # ----- РГГУ -----
 
 # Запустить парсинг магистратуры РГГУ для всех конкурсов
-# import rggu_mag; rggu_mag.main()
+import rggu_mag; rggu_mag.main()
 
 # ----- МГУ -----
 
 # Запустить парсинг магистратуры МГУ для всех конкурсов
-# import msu_mag; msu_mag.main()
+
+import msu_mag; msu_mag.main()
