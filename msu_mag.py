@@ -1,6 +1,6 @@
 # encoding=utf-8
 
-from common import getSiteText, makeSoup, soupToRawString, visibleSoupToString, PROPERTY, writeJson
+from common import getSiteText, makeSoup, soupToRawString, visibleSoupToString, PROPERTY, writeJsonPerPage, writeJsonPerUniversity
 from common_logging import printDot, logInfo
 from common_task_queue import taskQueue
 from bs4 import BeautifulSoup
@@ -95,5 +95,5 @@ def main():
     contestLinks = findContestLinks()
     linkToAbits = findAbitsAsync(contestLinks)
 
-    for link, abits in linkToAbits.items():
-        writeJson({"link": link, "abits": abits}, "msu-mag/", link + ".json")
+    writeJsonPerUniversity(linkToAbits, "msu-mag")
+    # writeJsonPerPage(linkToAbits, "msu-mag")

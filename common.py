@@ -9,6 +9,8 @@ import os
 from common_logging import logInfo, logWarning
 import urllib.parse
 
+# TODO: Split the file to common_json, common_html, common_properties
+
 
 class PROPERTY:
     ABIT_NAME = "abitName"
@@ -82,6 +84,15 @@ def writeJson(jsonData, dirName, fileName):
     with open(fileName, "w", encoding="utf-8") as outputFile:
         print(json.dumps(jsonData, ensure_ascii=False, indent=2), file=outputFile)
         logInfo("JSON файл '%s' записан." % fileName)
+
+
+def writeJsonPerPage(linkToAbits, dirName):
+    for link, abits in linkToAbits.items():
+        writeJson({"link": link, "abits": abits}, dirName, link + ".json")
+
+
+def writeJsonPerUniversity(linkToAbits, universityName):
+    writeJson(linkToAbits, "", universityName + ".json")
 
 
 def soupToRawString(soup):

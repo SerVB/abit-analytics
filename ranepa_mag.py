@@ -3,7 +3,7 @@ import traceback
 
 from common_logging import logInfo, logWarning, logError, printDot
 
-from common import writeJson, PROPERTY, makeSoup, visibleSoupToString, soupToRawString
+from common import PROPERTY, makeSoup, visibleSoupToString, soupToRawString, writeJsonPerUniversity, writeJsonPerPage
 
 from common_task_queue import taskQueue
 
@@ -122,10 +122,9 @@ def main(department=None):
     departmentToSpecialityToFormToEducationalProgramToLink, count = findDepartmentToSpecialityToFormToEducationalProgramToLink(departmentToSpecialityToFormToLink)
     logInfo("Образовательных программ найдено: %s. Начат поиск абитуриентов." % count)
 
-    linkToAbit, count = findLinkToAbit(departmentToSpecialityToFormToEducationalProgramToLink)
+    linkToAbits, count = findLinkToAbit(departmentToSpecialityToFormToEducationalProgramToLink)
     logInfo("Всего абитуриентов найдено: %s." % count)
 
-    for link, abits in linkToAbit.items():
-        writeJson({"link": link, "abits": abits}, "ranepa-mag/", link + ".json")
+    writeJsonPerUniversity(linkToAbits, "ranepa-mag")
+    # writeJsonPerPage(linkToAbits, "ranepa-mag")
 
-    logInfo("Json файлов записано: %s. Завершено." % len(linkToAbit))

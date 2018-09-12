@@ -1,5 +1,5 @@
 # encoding=utf-8
-from common import makeSoup, visibleSoupToString, writeJson
+from common import makeSoup, visibleSoupToString, writeJsonPerUniversity, writeJsonPerPage
 from common_logging import logInfo, logWarning
 from common_task_queue import taskQueue
 
@@ -108,10 +108,10 @@ def main(contests=None):
 
     contestLinks = addPrefixLinkToContests(contests)
 
-    contestLists = findContestListsAsync(contestLinks)  # contestPage: { abit }
+    linkToAbits = findContestListsAsync(contestLinks)  # contestPage: { abit }
 
-    logInfo("Обработано конкурсов: %d." % len(contestLists))
-    logInfo("Найдено записей: %d." % sum(map(len, contestLists.values())))
+    logInfo("Обработано конкурсов: %d." % len(linkToAbits))
+    logInfo("Найдено записей: %d." % sum(map(len, linkToAbits.values())))
 
-    for link, abits in contestLists.items():
-        writeJson({"link": link, "abits": abits}, "spbu-bach/", link + ".json")
+    writeJsonPerUniversity(linkToAbits, "spbu-bach")
+    # writeJsonPerPage(linkToAbits, "spbu-bach")

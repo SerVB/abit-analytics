@@ -1,7 +1,7 @@
 # encoding=utf-8
 
 import json
-from common import writeJson, getSiteText, PROPERTY
+from common import getSiteText, PROPERTY, writeJsonPerUniversity, writeJsonPerPage
 from common_logging import logInfo, printDot
 from common_task_queue import taskQueue
 
@@ -56,13 +56,16 @@ def parseSite(link, additionalParameters):
     contestLinks = findContestLinks(link)
     logInfo("Конкурсов найдено: %s." % len(contestLinks))
 
-    linkToAbit = findAbitsAsync(contestLinks, additionalParameters)
-    for link, abits in linkToAbit.items():
-        writeJson({"link": link, "abits": abits}, "rggu-mag/", link)
+    return findAbitsAsync(contestLinks, additionalParameters)
 
 
 def main():
     logInfo("----- РГГУ (Магистратура) -----")
 
-    parseSite(RGGU_SITE_BUDGET, {PROPERTY.FOR_MONEY: False})
-    parseSite(RGGU_SITE_CONTRACT, {PROPERTY.FOR_MONEY: True})
+    linkToAbitsBudget = parseSite(RGGU_SITE_BUDGET, {PROPERTY.FOR_MONEY: False})
+    linkToAbitsContract = parseSite(RGGU_SITE_CONTRACT, {PROPERTY.FOR_MONEY: True})
+
+    linkToAbits = {**linkToAbitsBudget, **linkToAbitsContract}
+
+    writeJsonPerUniversity(linkToAbits, "rggu-mag")
+    # writeJsonPerPage(linkToAbits, "rggu-mag")
