@@ -3,8 +3,7 @@
 import json
 
 from common_html import getSiteText
-from common_json import writeJsonPerUniversity, writeJsonPerPage
-from common_logging import logInfo, printDot
+from common_logging import logInfo, logWarning, printDot
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
@@ -62,13 +61,22 @@ def parseSite(link, additionalParameters):
     return findAbitsAsync(contestLinks, additionalParameters)
 
 
-def main():
+def main(saveMethods=()):
     logInfo("----- РГГУ (Магистратура) -----")
 
+    if len(saveMethods) == 0:
+        logWarning("Пустой список методов сохранения.")
+
+    logInfo("Начат поиск бюджетников.")
     linkToAbitsBudget = parseSite(RGGU_SITE_BUDGET, {PROPERTY.FOR_MONEY: False})
+    logInfo("Бюджетных конкурсов найдено: %d. Начат поиск контрактников." % len(linkToAbitsBudget))
     linkToAbitsContract = parseSite(RGGU_SITE_CONTRACT, {PROPERTY.FOR_MONEY: True})
+    logInfo("Контрактных конкурсов найдено: %d. Начато слитие конкурсов." % len(linkToAbitsContract))
 
     linkToAbits = {**linkToAbitsBudget, **linkToAbitsContract}
 
-    writeJsonPerUniversity(linkToAbits, "rggu-mag")
-    # writeJsonPerPage(linkToAbits, "rggu-mag")
+    logInfo("Найдено записей: %d. Готово." % sum(map(len, linkToAbits.values())))
+
+    for saveMethod in saveMethods:
+        saveMethod(linkToAbits, "rggu-mag")
+    logInfo("Сохранено.")

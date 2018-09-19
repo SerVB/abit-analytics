@@ -1,7 +1,6 @@
 # encoding=utf-8
 
 from common_html import makeSoup, visibleSoupToString
-from common_json import writeJsonPerUniversity, writeJsonPerPage
 from common_logging import logInfo, logWarning
 from common_task_queue import taskQueue
 
@@ -93,8 +92,11 @@ def flattenContestLists(contestLists):
     return lists
 
 
-def main(contests=None):
+def main(contests=None, saveMethods=()):
     logInfo("----- СПбГУ (Бакалавриат) -----")
+
+    if len(saveMethods) == 0:
+        logWarning("Пустой список методов сохранения.")
 
     if contests is None:
         logInfo("Поиск всех конкурсов. Чтобы получить полный список, нужно сделать около десяти тысяч запросов, поэтому это займет долгое время...")
@@ -113,7 +115,8 @@ def main(contests=None):
     linkToAbits = findContestListsAsync(contestLinks)  # contestPage: { abit }
 
     logInfo("Обработано конкурсов: %d." % len(linkToAbits))
-    logInfo("Найдено записей: %d." % sum(map(len, linkToAbits.values())))
+    logInfo("Найдено записей: %d. Готово." % sum(map(len, linkToAbits.values())))
 
-    writeJsonPerUniversity(linkToAbits, "spbu-bach")
-    # writeJsonPerPage(linkToAbits, "spbu-bach")
+    for saveMethod in saveMethods:
+        saveMethod(linkToAbits, "spbu-bach")
+    logInfo("Сохранено.")

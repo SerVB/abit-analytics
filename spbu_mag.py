@@ -1,8 +1,7 @@
 # encoding=utf-8
 
 from common_html import makeSoup
-from common_json import writeJsonPerUniversity, writeJsonPerPage
-from common_logging import logInfo
+from common_logging import logInfo, logWarning
 
 from spbu_main import findContestListsAsync
 
@@ -27,8 +26,11 @@ def addPrefixLinkToContests(contests):
     return set(map(lambda contest: SPBU_SITE + contest, contests))
 
 
-def main(contests=None):
+def main(contests=None, saveMethods=()):
     logInfo("----- СПбГУ (Магистратура) -----")
+
+    if len(saveMethods) == 0:
+        logWarning("Пустой список методов сохранения.")
 
     if contests is None:
         logInfo("Поиск конкурсов.")
@@ -40,7 +42,8 @@ def main(contests=None):
     linkToAbits = findContestListsAsync(contestLinks)  # contestPage: { abit }
 
     logInfo("Обработано конкурсов: %d." % len(linkToAbits))
-    logInfo("Найдено записей: %d." % sum(map(len, linkToAbits.values())))
+    logInfo("Найдено записей: %d. Готово." % sum(map(len, linkToAbits.values())))
 
-    writeJsonPerUniversity(linkToAbits, "spbu-mag")
-    # writeJsonPerPage(linkToAbits, "spbu-mag")
+    for saveMethod in saveMethods:
+        saveMethod(linkToAbits, "spbu-mag")
+    logInfo("Сохранено.")

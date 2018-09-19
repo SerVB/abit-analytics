@@ -3,8 +3,7 @@
 import traceback
 
 from common_html import makeSoup, visibleSoupToString, soupToRawString
-from common_json import writeJsonPerUniversity, writeJsonPerPage
-from common_logging import logInfo, logError, printDot
+from common_logging import logInfo, logWarning, logError, printDot
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
@@ -104,8 +103,12 @@ def findLinkToAbit(educationalPrograms):
 
 
 # Филиал - строка. Для всех доступных филиалов None
-def main(department=None):
+def main(department=None, saveMethods=()):
     logInfo("----- РАНХиГС (Магистратура) -----")
+
+    if len(saveMethods) == 0:
+        logWarning("Пустой список методов сохранения.")
+
     logInfo("Начат поиск филиалов.")
 
     departmentToLink, count = findDepartmentToLink(RANEPA_SITE)
@@ -124,7 +127,8 @@ def main(department=None):
     logInfo("Образовательных программ найдено: %s. Начат поиск абитуриентов." % count)
 
     linkToAbits, count = findLinkToAbit(departmentToSpecialityToFormToEducationalProgramToLink)
-    logInfo("Всего абитуриентов найдено: %s." % count)
+    logInfo("Найдено записей: %s. Готово." % count)
 
-    writeJsonPerUniversity(linkToAbits, "ranepa-mag")
-    # writeJsonPerPage(linkToAbits, "ranepa-mag")
+    for saveMethod in saveMethods:
+        saveMethod(linkToAbits, "ranepa-mag")
+    logInfo("Сохранено.")

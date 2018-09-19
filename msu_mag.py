@@ -3,8 +3,7 @@
 from bs4 import BeautifulSoup
 
 from common_html import getSiteText, makeSoup, soupToRawString, visibleSoupToString
-from common_json import writeJsonPerPage, writeJsonPerUniversity
-from common_logging import printDot, logInfo
+from common_logging import printDot, logInfo, logWarning
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
@@ -93,10 +92,18 @@ def findAbitsAsync(contestLinks):
     return abits
 
 
-def main():
+def main(saveMethods=()):
     logInfo("----- МГУ (Магистратура) -----")
-    contestLinks = findContestLinks()
-    linkToAbits = findAbitsAsync(contestLinks)
 
-    writeJsonPerUniversity(linkToAbits, "msu-mag")
-    # writeJsonPerPage(linkToAbits, "msu-mag")
+    if len(saveMethods) == 0:
+        logWarning("Пустой список методов сохранения.")
+
+    logInfo("Начат поиск конкурсов.")
+    contestLinks = findContestLinks()
+    logInfo("Конкурсов найдено: %d. Начат поиск поступающих." % len(contestLinks))
+    linkToAbits = findAbitsAsync(contestLinks)
+    logInfo("Найдено записей: %d. Готово." % sum(map(len, linkToAbits.values())))
+
+    for saveMethod in saveMethods:
+        saveMethod(linkToAbits, "msu-mag")
+    logInfo("Сохранено.")
