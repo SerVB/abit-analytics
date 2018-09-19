@@ -1,0 +1,2 @@
+# Required libraries (to be installed via pip)
+beautifulsoup4
