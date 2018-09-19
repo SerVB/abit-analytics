@@ -1,0 +1,5 @@
+language: python
+python:
+  - "3.6"
+script:
+  - python sample_launcher_all_mag.py
