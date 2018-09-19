@@ -2,6 +2,7 @@
 
 import logging
 import sys
+from datetime import datetime
 
 LOGGING_FORMAT = "%(asctime)s ::: %(levelname)s ::: %(message)s"
 LOGGING_FILE = "lastLog.txt"
@@ -24,7 +25,7 @@ def _ensureDotWasntLogged():
 def logError(message):
     _ensureDotWasntLogged()
 
-    print("!Ошибка!", message)
+    print(datetime.now(), "!Ошибка!", message)
     logging.error(message)
 
 
@@ -32,7 +33,7 @@ def logError(message):
 def logWarning(message):
     _ensureDotWasntLogged()
 
-    print("!Предупреждение!", message)
+    print(datetime.now(), "!Предупреждение!", message)
     logging.warning(message)
 
 
@@ -40,7 +41,7 @@ def logWarning(message):
 def logInfo(message):
     _ensureDotWasntLogged()
 
-    print(message)
+    print(datetime.now(), message)
     logging.info(message)
 
 
