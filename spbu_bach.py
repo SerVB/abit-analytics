@@ -1,5 +1,7 @@
 # encoding=utf-8
-from common import makeSoup, visibleSoupToString, writeJsonPerUniversity, writeJsonPerPage
+
+from common_html import makeSoup, visibleSoupToString
+from common_json import writeJsonPerUniversity, writeJsonPerPage
 from common_logging import logInfo, logWarning
 from common_task_queue import taskQueue
 

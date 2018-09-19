@@ -1,8 +1,10 @@
 # encoding=utf-8
-from common import makeSoup, visibleSoupToString, soupToRawString, PROPERTY
-from common_logging import logInfo, logWarning, logError, printDot
-from common_task_queue import taskQueue
+
 import traceback
+
+from common_html import makeSoup, visibleSoupToString
+from common_logging import logError, printDot
+from common_task_queue import taskQueue
 
 
 RANEPA_ROOT = "https://lk.ranepa.ru/pk/list.php"

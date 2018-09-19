@@ -1,6 +1,8 @@
 # encoding=utf-8
-from common import makeSoup, soupToRawString, visibleSoupToString, PROPERTY
-from common_logging import printDot, logWarning
+
+from common_html import makeSoup, soupToRawString, visibleSoupToString
+from common_logging import printDot
+from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
 

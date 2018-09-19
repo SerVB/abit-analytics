@@ -1,31 +1,12 @@
 # encoding=utf-8
+
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from bs4 import BeautifulSoup
 from time import sleep
 import ssl
-import json
-import os
-from common_logging import logInfo, logWarning
-import urllib.parse
 
-# TODO: Split the file to common_json, common_html, common_properties
-
-
-class PROPERTY:
-    ABIT_NAME = "abitName"
-    BIRTHDAY = "birthday"
-    SPECIALITY = "speciality"
-    EDU_PROG = "eduProg"
-    FOR_MONEY = "forMoney"
-    GRADES = "grades"
-    SUM = "sum"
-    SUM_EXAM = "sumExam"
-    EXTRA_BONUS = "extraBonus"
-    ORIGINAL = "original"
-    ONLY_IN_WALLS = "onlyInWalls"
-    CONTEST_TYPE = "contestType"
-    DEPARTMENT = "department"
+from common_logging import logWarning
 
 
 def getSiteText(url, title=None, time=1, maxTimes=3):
@@ -58,7 +39,7 @@ def getSiteText(url, title=None, time=1, maxTimes=3):
 
 # Делает суп по ссылке.
 # Если не удается сделать за maxTimes раз, сообщает о неудаче и отдает None
-def makeSoup(url, title=None, time=1, maxTimes=3):
+def makeSoup(url, title=None, maxTimes=3):
     html = getSiteText(url, title=title, maxTimes=maxTimes)
     if html is None:
         return None
@@ -67,43 +48,15 @@ def makeSoup(url, title=None, time=1, maxTimes=3):
     return soup
 
 
-def writeJson(jsonData, dirName, fileName):
-    dirName = "output/" + dirName
-
-    if not os.path.exists(dirName):
-        os.makedirs(dirName)
-
-    fileName = "output/" + dirName + urllib.parse.quote_plus(fileName).replace("\\", "/")
-
-    suffixName = fileName[fileName.rfind("/") + 1:]
-    if len(suffixName) > 255:  # Ограничение Windows
-        suffixName = suffixName[-255:]
-
-    fileName = dirName + suffixName
-
-    with open(fileName, "w", encoding="utf-8") as outputFile:
-        print(json.dumps(jsonData, ensure_ascii=False, indent=2), file=outputFile)
-        logInfo("JSON файл '%s' записан." % fileName)
-
-
-def writeJsonPerPage(linkToAbits, dirName):
-    for link, abits in linkToAbits.items():
-        writeJson({"link": link, "abits": abits}, dirName, link + ".json")
-
-
-def writeJsonPerUniversity(linkToAbits, universityName):
-    writeJson(linkToAbits, "", universityName + ".json")
-
-
 def soupToRawString(soup):
     return soup.decode_contents().strip()
 
 
-def strOrEmpty(obj):
+def _strOrEmpty(obj):
     if obj is None:
         return ""
     return str(obj)
 
 
 def visibleSoupToString(soup):
-    return strOrEmpty(soup.find(text=True)).strip()
+    return _strOrEmpty(soup.find(text=True)).strip()

@@ -1,9 +1,11 @@
 # encoding=utf-8
-from common import makeSoup, writeJsonPerUniversity, writeJsonPerPage
 
+from common_html import makeSoup
+from common_json import writeJsonPerUniversity, writeJsonPerPage
 from common_logging import logInfo
 
 from spbu_main import findContestListsAsync
+
 
 SPBU_SITE = "https://cabinet.spbu.ru/Lists/Mag_EntryLists/"
 

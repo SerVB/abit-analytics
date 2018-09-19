@@ -1,8 +1,11 @@
 # encoding=utf-8
 
 import json
-from common import getSiteText, PROPERTY, writeJsonPerUniversity, writeJsonPerPage
+
+from common_html import getSiteText
+from common_json import writeJsonPerUniversity, writeJsonPerPage
 from common_logging import logInfo, printDot
+from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
 

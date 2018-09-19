@@ -1,4 +1,5 @@
 # encoding=utf-8
+
 from threading import Thread
 from queue import Queue
 
@@ -13,7 +14,7 @@ def _worker():
         taskQueue.task_done()
 
 
-# 5 на моей машине работает без ошибок
+# Количество потоков-рабочих. 5 на моей машине работает без ошибок
 MAX_WORKER_COUNT = 5
 
 

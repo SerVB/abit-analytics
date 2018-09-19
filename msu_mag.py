@@ -1,9 +1,12 @@
 # encoding=utf-8
 
-from common import getSiteText, makeSoup, soupToRawString, visibleSoupToString, PROPERTY, writeJsonPerPage, writeJsonPerUniversity
-from common_logging import printDot, logInfo
-from common_task_queue import taskQueue
 from bs4 import BeautifulSoup
+
+from common_html import getSiteText, makeSoup, soupToRawString, visibleSoupToString
+from common_json import writeJsonPerPage, writeJsonPerUniversity
+from common_logging import printDot, logInfo
+from common_properties import PROPERTY
+from common_task_queue import taskQueue
 
 
 MSU_SITE = "http://cpk.msu.ru/"

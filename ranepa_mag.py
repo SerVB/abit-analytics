@@ -1,10 +1,11 @@
 # encoding=utf-8
+
 import traceback
 
-from common_logging import logInfo, logWarning, logError, printDot
-
-from common import PROPERTY, makeSoup, visibleSoupToString, soupToRawString, writeJsonPerUniversity, writeJsonPerPage
-
+from common_html import makeSoup, visibleSoupToString, soupToRawString
+from common_json import writeJsonPerUniversity, writeJsonPerPage
+from common_logging import logInfo, logError, printDot
+from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
 from ranepa_main import findDepartmentToLink
@@ -127,4 +128,3 @@ def main(department=None):
 
     writeJsonPerUniversity(linkToAbits, "ranepa-mag")
     # writeJsonPerPage(linkToAbits, "ranepa-mag")
-
