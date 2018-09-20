@@ -3,3 +3,7 @@ python:
   - "3.6"
 script:
   - python sample_launcher_all_mag.py
+  - cat output/msu-mag.json
+  - cat output/ranepa-mag.json
+  - cat output/rggu-mag.json
+  - cat output/spbu-mag.json
