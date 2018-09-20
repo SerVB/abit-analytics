@@ -7,7 +7,7 @@
 [![Python 3](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Build status](https://travis-ci.org/SerVB/abit-analytics.svg?master)](https://travis-ci.org/SerVB/abit-analytics)
 
-Методы для загрузки списков поступающих в отслеживаемые ВУЗы, парсинга списков поступающих и сохранение списков в формате JSON.
+Методы для загрузки списков поступающих в отслеживаемые ВУЗы, парсинга списков поступающих и сохранения списков в формате JSON.
 
 ## Быстрый старт
 - В [`sample_launcher.py`](sample_launcher.py) показаны возможные варианты запуска сбора данных о поступающих для каждого отслеживаемого ВУЗа.
