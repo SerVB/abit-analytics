@@ -3,4 +3,4 @@ python:
   - "3.6"
 script:
   - python sample_launcher_all_mag.py
-  - python sample_launcher_all_bach.py
+  - python sample_launcher_all_bach_precomputed.py

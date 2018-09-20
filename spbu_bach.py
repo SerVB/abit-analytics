@@ -111,6 +111,8 @@ def main(contests=None, saveMethods=DEFAULT_SAVE_METHODS):
 
         contests = flattenAbitContests(abitContests)  # { contestId }
 
+        logInfo("Конкурсы: %s." % contests)
+
         logInfo("Найдено конкурсов: %d." % len(contests))
 
     contestLinks = addPrefixLinkToContests(contests)
