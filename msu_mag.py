@@ -3,6 +3,7 @@
 from bs4 import BeautifulSoup
 
 from common_html import getSiteText, makeSoup, soupToRawString, visibleSoupToString
+from common_json import DEFAULT_SAVE_METHODS
 from common_logging import printDot, logInfo, logWarning
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
@@ -92,7 +93,7 @@ def findAbitsAsync(contestLinks):
     return abits
 
 
-def main(saveMethods=()):
+def main(saveMethods=DEFAULT_SAVE_METHODS):
     logInfo("----- МГУ (Магистратура) -----")
 
     if len(saveMethods) == 0:

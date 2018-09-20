@@ -1,7 +1,8 @@
 # encoding=utf-8
 
 from common_html import makeSoup, visibleSoupToString
-from common_logging import logInfo, logWarning
+from common_json import DEFAULT_SAVE_METHODS
+from common_logging import logInfo, logWarning, printDot
 from common_task_queue import taskQueue
 
 from spbu_main import findContestListsAsync
@@ -41,6 +42,7 @@ def checkAbitCount(spbuSite, abitIds):
         message %= (rowCount - 1, abitCount)
         logWarning(message)
 
+
 # Добавляет конкурсы абитуриента в словарь abitContests
 def extractContests(abitContests, abitName, abitId):
     abitContests[abitId] = set()
@@ -51,6 +53,7 @@ def extractContests(abitContests, abitName, abitId):
         if a.has_attr("href"):
             contestPage = a["href"]
             abitContests[abitId].add(contestPage[:contestPage.find("#")])
+    printDot()
 
 
 # Поиск всех конкурсов:
@@ -92,7 +95,7 @@ def flattenContestLists(contestLists):
     return lists
 
 
-def main(contests=None, saveMethods=()):
+def main(contests=None, saveMethods=DEFAULT_SAVE_METHODS):
     logInfo("----- СПбГУ (Бакалавриат) -----")
 
     if len(saveMethods) == 0:
@@ -107,6 +110,8 @@ def main(contests=None, saveMethods=()):
         abitContests = findAbitContestsAsync(abitIds)  # abitId: { contestId }
 
         contests = flattenAbitContests(abitContests)  # { contestId }
+
+        logInfo("Конкурсы: %s." % contests)
 
         logInfo("Найдено конкурсов: %d." % len(contests))
 

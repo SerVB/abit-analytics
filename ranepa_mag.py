@@ -3,6 +3,7 @@
 import traceback
 
 from common_html import makeSoup, visibleSoupToString, soupToRawString
+from common_json import DEFAULT_SAVE_METHODS
 from common_logging import logInfo, logWarning, logError, printDot
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
@@ -103,7 +104,7 @@ def findLinkToAbit(educationalPrograms):
 
 
 # Филиал - строка. Для всех доступных филиалов None
-def main(department=None, saveMethods=()):
+def main(department=None, saveMethods=DEFAULT_SAVE_METHODS):
     logInfo("----- РАНХиГС (Магистратура) -----")
 
     if len(saveMethods) == 0:
