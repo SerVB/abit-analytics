@@ -1,2 +1,2 @@
-# Required libraries (to be installed via pip)
+# Необходимые сторонние библиотеки (устанавливаются с помощью pip)
 beautifulsoup4
