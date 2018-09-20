@@ -52,11 +52,5 @@ def soupToRawString(soup):
     return soup.decode_contents().strip()
 
 
-def _strOrEmpty(obj):
-    if obj is None:
-        return ""
-    return str(obj)
-
-
 def visibleSoupToString(soup):
-    return _strOrEmpty(soup.find(text=True)).strip()
+    return (soup.find(text=True) or "").strip()
