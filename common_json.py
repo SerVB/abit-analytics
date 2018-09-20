@@ -33,3 +33,6 @@ def writeJsonPerPage(linkToAbits, dirName):
 
 def writeJsonPerUniversity(linkToAbits, universityName):
     _writeJson(linkToAbits, "", universityName + ".json")
+
+
+DEFAULT_SAVE_METHODS = (writeJsonPerUniversity,)

@@ -3,6 +3,7 @@
 import json
 
 from common_html import getSiteText
+from common_json import DEFAULT_SAVE_METHODS
 from common_logging import logInfo, logWarning, printDot
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
@@ -61,7 +62,7 @@ def parseSite(link, additionalParameters):
     return findAbitsAsync(contestLinks, additionalParameters)
 
 
-def main(saveMethods=()):
+def main(saveMethods=DEFAULT_SAVE_METHODS):
     logInfo("----- РГГУ (Магистратура) -----")
 
     if len(saveMethods) == 0:

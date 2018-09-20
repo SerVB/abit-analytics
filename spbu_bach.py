@@ -1,6 +1,7 @@
 # encoding=utf-8
 
 from common_html import makeSoup, visibleSoupToString
+from common_json import DEFAULT_SAVE_METHODS
 from common_logging import logInfo, logWarning
 from common_task_queue import taskQueue
 
@@ -92,7 +93,7 @@ def flattenContestLists(contestLists):
     return lists
 
 
-def main(contests=None, saveMethods=()):
+def main(contests=None, saveMethods=DEFAULT_SAVE_METHODS):
     logInfo("----- СПбГУ (Бакалавриат) -----")
 
     if len(saveMethods) == 0:

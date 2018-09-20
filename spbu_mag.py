@@ -1,6 +1,7 @@
 # encoding=utf-8
 
 from common_html import makeSoup
+from common_json import DEFAULT_SAVE_METHODS
 from common_logging import logInfo, logWarning
 
 from spbu_main import findContestListsAsync
@@ -26,7 +27,7 @@ def addPrefixLinkToContests(contests):
     return set(map(lambda contest: SPBU_SITE + contest, contests))
 
 
-def main(contests=None, saveMethods=()):
+def main(contests=None, saveMethods=DEFAULT_SAVE_METHODS):
     logInfo("----- СПбГУ (Магистратура) -----")
 
     if len(saveMethods) == 0:
