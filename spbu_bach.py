@@ -2,7 +2,7 @@
 
 from common_html import makeSoup, visibleSoupToString
 from common_json import DEFAULT_SAVE_METHODS
-from common_logging import logInfo, logWarning
+from common_logging import logInfo, logWarning, printDot
 from common_task_queue import taskQueue
 
 from spbu_main import findContestListsAsync
@@ -42,6 +42,7 @@ def checkAbitCount(spbuSite, abitIds):
         message %= (rowCount - 1, abitCount)
         logWarning(message)
 
+
 # Добавляет конкурсы абитуриента в словарь abitContests
 def extractContests(abitContests, abitName, abitId):
     abitContests[abitId] = set()
@@ -52,6 +53,7 @@ def extractContests(abitContests, abitName, abitId):
         if a.has_attr("href"):
             contestPage = a["href"]
             abitContests[abitId].add(contestPage[:contestPage.find("#")])
+    printDot()
 
 
 # Поиск всех конкурсов:
