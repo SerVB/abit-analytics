@@ -64,7 +64,7 @@ def getAbitsFromContest(contestOnPage: str, commonData: Dict[str, str]) -> List[
     return abits
 
 
-def findAbits(abits: Dict[str, List[str, str]], contestLink: str) -> None:
+def findAbits(abits: Dict[str, list], contestLink: str) -> None:
     soup = makeSoup(contestLink)
 
     commonData = dict()
@@ -109,3 +109,7 @@ def main(saveMethods=DEFAULT_SAVE_METHODS) -> None:
     for saveMethod in saveMethods:
         saveMethod(linkToAbits, "msu-mag")
     logInfo("Сохранено.")
+
+
+if __name__ == "__main__":
+    main()
