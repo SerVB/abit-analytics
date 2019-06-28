@@ -1,6 +1,7 @@
 # encoding=utf-8
 
 import json
+from typing import List
 
 from common_html import getSiteText
 from common_json import DEFAULT_SAVE_METHODS
@@ -8,12 +9,11 @@ from common_logging import logInfo, logWarning, printDot
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
-
 RGGU_SITE_BUDGET = "http://apply.rggu.ru/magistratura_list_budget/"
 RGGU_SITE_CONTRACT = "http://apply.rggu.ru/magistratura_list_contract/"
 
 
-def findContestLinks(rgguSite):
+def findContestLinks(rgguSite: str) -> List[str]:
     jsonLink = rgguSite + "json/%s.json"
 
     mainJsonLink = jsonLink % ".config"
@@ -23,7 +23,7 @@ def findContestLinks(rgguSite):
     return contestLinks
 
 
-def findAbits(abits, contestSite, additionalParameters):
+def findAbits(abits: dict, contestSite: str, additionalParameters: dict) -> None:
     jsonContent = json.loads(getSiteText(contestSite))
 
     commonData = dict(additionalParameters)
@@ -44,7 +44,7 @@ def findAbits(abits, contestSite, additionalParameters):
     printDot()
 
 
-def findAbitsAsync(contestLinks, additionalParameters):
+def findAbitsAsync(contestLinks: List[str], additionalParameters: dict) -> dict:
     abits = dict()  # {link: [abits]}
 
     for contestLink in contestLinks:
@@ -55,14 +55,14 @@ def findAbitsAsync(contestLinks, additionalParameters):
     return abits
 
 
-def parseSite(link, additionalParameters):
+def parseSite(link: str, additionalParameters: dict) -> dict:
     contestLinks = findContestLinks(link)
     logInfo("Конкурсов найдено: %s." % len(contestLinks))
 
     return findAbitsAsync(contestLinks, additionalParameters)
 
 
-def main(saveMethods=DEFAULT_SAVE_METHODS):
+def main(saveMethods=DEFAULT_SAVE_METHODS) -> None:
     logInfo("----- РГГУ (Магистратура) -----")
 
     if len(saveMethods) == 0:

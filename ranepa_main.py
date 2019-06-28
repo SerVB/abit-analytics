@@ -1,17 +1,17 @@
 # encoding=utf-8
 
 import traceback
+from typing import Tuple, Dict
 
 from common_html import makeSoup, visibleSoupToString
 from common_logging import logError, printDot
 from common_task_queue import taskQueue
 
-
 RANEPA_ROOT = "https://lk.ranepa.ru/pk/list.php"
 
 
 # link - сайт с филиалами
-def findDepartmentToLink(link):
+def findDepartmentToLink(link: str) -> Tuple[Dict[str, str], int]:
     departments = dict()  # {department: link}
 
     for table in makeSoup(link).find_all("table"):
@@ -28,7 +28,7 @@ def findDepartmentToLink(link):
 
 
 # departments - {department: link}
-def findDepartmentToSpecialityToLink(departments):
+def findDepartmentToSpecialityToLink(departments: Dict[str, str]) -> Tuple[Dict[str, Dict[str, str]], int]:
     specialities = dict()  # {department: {speciality: link}}
     specialityCount = [0]
 
@@ -58,7 +58,8 @@ def findDepartmentToSpecialityToLink(departments):
 
 
 # specialities - {department: {speciality: link}}
-def findDepartmentToSpecialityToFormToLink(specialities):
+def findDepartmentToSpecialityToFormToLink(specialities: Dict[str, Dict[str, str]]) -> \
+        Tuple[Dict[str, Dict[str, Dict[str, str]]], int]:
     forms = dict()  # {department: {speciality: {form: link}}}
     formCount = [0]
 
@@ -91,7 +92,8 @@ def findDepartmentToSpecialityToFormToLink(specialities):
 
 
 # forms - {department: {speciality: {form: link}}}
-def findDepartmentToSpecialityToFormToEducationalProgramToLink(forms):
+def findDepartmentToSpecialityToFormToEducationalProgramToLink(forms: Dict[str, Dict[str, Dict[str, str]]]) -> \
+        Tuple[Dict[str, Dict[str, Dict[str, Dict[str, str]]]], int]:
     educationalPrograms = dict()  # {department: {speciality: {form: {educationalProgram: link}}}}
     educationalProgramCount = [0]
 

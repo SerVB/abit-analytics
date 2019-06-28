@@ -7,7 +7,7 @@ from threading import Thread
 taskQueue = Queue()
 
 
-def _worker():
+def _worker() -> None:
     while True:
         func, args = taskQueue.get()
         func(*args)

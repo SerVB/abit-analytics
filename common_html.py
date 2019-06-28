@@ -1,15 +1,17 @@
 # encoding=utf-8
 
-from urllib.request import Request, urlopen
-from urllib.error import HTTPError, URLError
-from bs4 import BeautifulSoup
-from time import sleep
 import ssl
+from time import sleep
+from typing import Optional
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
+
+from bs4 import BeautifulSoup
 
 from common_logging import logWarning
 
 
-def getSiteText(url, title=None, time=1, maxTimes=3):
+def getSiteText(url: str, title: Optional[str] = None, time: int = 1, maxTimes: int = 3) -> Optional[str]:
     if time > maxTimes:
         message = "Не смог получить доступ к странице %s уже много раз (%d). Больше не буду пытаться."
         if title is None:
@@ -39,7 +41,7 @@ def getSiteText(url, title=None, time=1, maxTimes=3):
 
 # Делает суп по ссылке.
 # Если не удается сделать за maxTimes раз, сообщает о неудаче и отдает None
-def makeSoup(url, title=None, maxTimes=3):
+def makeSoup(url: str, title: str = None, maxTimes: int = 3) -> Optional[BeautifulSoup]:
     html = getSiteText(url, title=title, maxTimes=maxTimes)
     if html is None:
         return None
@@ -48,9 +50,9 @@ def makeSoup(url, title=None, maxTimes=3):
     return soup
 
 
-def soupToRawString(soup):
+def soupToRawString(soup: BeautifulSoup) -> str:
     return soup.decode_contents().strip()
 
 
-def visibleSoupToString(soup):
+def visibleSoupToString(soup: BeautifulSoup) -> str:
     return (soup.find(text=True) or "").strip()

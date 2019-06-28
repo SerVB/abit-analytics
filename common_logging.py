@@ -13,7 +13,7 @@ logging.basicConfig(handlers=[logging.FileHandler(LOGGING_FILE, "w", "utf-8")],
 _dotWasLogged = False  # Нужно ли переносить строку в консоли
 
 
-def _ensureDotWasntLogged():
+def _ensureDotWasNotLogged() -> None:
     global _dotWasLogged
 
     if _dotWasLogged:
@@ -22,31 +22,31 @@ def _ensureDotWasntLogged():
 
 
 # Логирует ошибку в консоль и в файл
-def logError(message):
-    _ensureDotWasntLogged()
+def logError(message: str) -> None:
+    _ensureDotWasNotLogged()
 
     print(datetime.now(), "!Ошибка!", message)
     logging.error(message)
 
 
 # Логирует предупреждение в консоль и в файл
-def logWarning(message):
-    _ensureDotWasntLogged()
+def logWarning(message: str) -> None:
+    _ensureDotWasNotLogged()
 
     print(datetime.now(), "!Предупреждение!", message)
     logging.warning(message)
 
 
 # Логирует сообщение в консоль и в файл
-def logInfo(message):
-    _ensureDotWasntLogged()
+def logInfo(message: str) -> None:
+    _ensureDotWasNotLogged()
 
     print(datetime.now(), message)
     logging.info(message)
 
 
 # Ставит точку в консоль
-def printDot():
+def printDot() -> None:
     global _dotWasLogged
 
     print(".", end="")

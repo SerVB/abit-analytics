@@ -1,5 +1,7 @@
 # encoding=utf-8
 
+from typing import List, Dict
+
 from bs4 import BeautifulSoup
 
 from common_html import getSiteText, makeSoup, soupToRawString, visibleSoupToString
@@ -8,13 +10,12 @@ from common_logging import printDot, logInfo, logWarning
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
-
 MSU_SITE = "http://cpk.msu.ru/"
 DEPARTMENT_NAME_IDX = 1
 ABIT_NAME_COL_IDX = 1
 
 
-def findContestLinks():
+def findContestLinks() -> List[str]:
     siteText = getSiteText(MSU_SITE + "daily").replace('"', "'")
     beginMagIdx = siteText.find("<br", siteText.find("id='sections_m'"))
     endMagIdx = siteText.find("<br", siteText.find("id='sections_2v'"))
@@ -32,7 +33,7 @@ def findContestLinks():
     return contests
 
 
-def getContestsOnPage(siteText):
+def getContestsOnPage(siteText: str) -> List[str]:
     answer = list()
     h4 = siteText.find("<h4 id")
     endFound = False
@@ -46,8 +47,8 @@ def getContestsOnPage(siteText):
     return answer
 
 
-def getAbitsFromContest(contestOnPage, commonData):
-    abits = list()
+def getAbitsFromContest(contestOnPage: str, commonData: Dict[str, str]) -> List[Dict[str, str]]:
+    abits: List[Dict[str, str]] = list()
     contestOnPageSoup = BeautifulSoup(contestOnPage, "html.parser")
     contestCommonData = dict(commonData)
     contestCommonData[PROPERTY.SPECIALITY] = visibleSoupToString(contestOnPageSoup.find("h4"))
@@ -63,7 +64,7 @@ def getAbitsFromContest(contestOnPage, commonData):
     return abits
 
 
-def findAbits(abits, contestLink):
+def findAbits(abits: Dict[str, List[str, str]], contestLink: str) -> None:
     soup = makeSoup(contestLink)
 
     commonData = dict()
@@ -82,8 +83,8 @@ def findAbits(abits, contestLink):
     printDot()
 
 
-def findAbitsAsync(contestLinks):
-    abits = dict()
+def findAbitsAsync(contestLinks: List[str]) -> Dict[str, List]:
+    abits: Dict[str, List[str, str]] = dict()
 
     for contestLink in contestLinks:
         taskQueue.put((findAbits, (abits, contestLink)))
@@ -93,7 +94,7 @@ def findAbitsAsync(contestLinks):
     return abits
 
 
-def main(saveMethods=DEFAULT_SAVE_METHODS):
+def main(saveMethods=DEFAULT_SAVE_METHODS) -> None:
     logInfo("----- МГУ (Магистратура) -----")
 
     if len(saveMethods) == 0:

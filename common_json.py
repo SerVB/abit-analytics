@@ -3,11 +3,12 @@
 import json
 import os
 import urllib.parse
+from typing import Union, Dict
 
 from common_logging import logInfo
 
 
-def _writeJson(jsonData, dirName, fileName):
+def _writeJson(jsonData: Union[dict, list], dirName: str, fileName: str) -> None:
     dirName = "output/" + dirName
 
     if not os.path.exists(dirName):
@@ -26,12 +27,12 @@ def _writeJson(jsonData, dirName, fileName):
         logInfo("JSON файл '%s' записан." % fileName)
 
 
-def writeJsonPerPage(linkToAbits, dirName):
+def writeJsonPerPage(linkToAbits: Dict[str, dict], dirName: str) -> None:
     for link, abits in linkToAbits.items():
         _writeJson({"link": link, "abits": abits}, dirName, link + ".json")
 
 
-def writeJsonPerUniversity(linkToAbits, universityName):
+def writeJsonPerUniversity(linkToAbits: Dict[str, dict], universityName: str) -> None:
     _writeJson(linkToAbits, "", universityName + ".json")
 
 

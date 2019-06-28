@@ -1,24 +1,24 @@
 # encoding=utf-8
 
 import traceback
+from typing import Dict, Tuple, Optional
 
 from common_html import makeSoup, visibleSoupToString, soupToRawString
 from common_json import DEFAULT_SAVE_METHODS
 from common_logging import logInfo, logWarning, logError, printDot
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
-
 from ranepa_main import findDepartmentToLink
-from ranepa_main import findDepartmentToSpecialityToLink
-from ranepa_main import findDepartmentToSpecialityToFormToLink
 from ranepa_main import findDepartmentToSpecialityToFormToEducationalProgramToLink
-
+from ranepa_main import findDepartmentToSpecialityToFormToLink
+from ranepa_main import findDepartmentToSpecialityToLink
 
 RANEPA_SITE = "https://lk.ranepa.ru/pk/list.php?FT=1&FL=0"
 
 
 # educationalPrograms - # {department: {speciality: {form: {educationalProgram: link}}}}
-def findLinkToAbit(educationalPrograms):
+def findLinkToAbit(educationalPrograms: Dict[str, Dict[str, Dict[str, Dict[str, str]]]]) -> \
+        Tuple[Dict[str, list], int]:
     links = dict()  # {link: [abits]}
     abitCount = [0]
 
@@ -107,7 +107,7 @@ def findLinkToAbit(educationalPrograms):
 
 
 # Филиал - строка. Для всех доступных филиалов None
-def main(department=None, saveMethods=DEFAULT_SAVE_METHODS):
+def main(department: Optional[str] = None, saveMethods=DEFAULT_SAVE_METHODS):
     logInfo("----- РАНХиГС (Бакалавриат) -----")
 
     if len(saveMethods) == 0:

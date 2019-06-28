@@ -1,23 +1,27 @@
 # encoding=utf-8
 
+from typing import List, Optional, Dict, Set
+
+from bs4 import BeautifulSoup
+
 from common_html import makeSoup, soupToRawString, visibleSoupToString
 from common_logging import printDot, logInfo, logWarning
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
 
-def getValue(line):
+def getValue(line: str) -> str:
     return line[line.rfind(">") + 1:].strip()
 
 
-def getFloatGrade(soup):
+def getFloatGrade(soup: BeautifulSoup) -> Optional[float]:
     try:  # TODO: (О) отбрасывается, правильно ли это?
         return float(visibleSoupToString(soup).replace(",", ".").replace("(О)", ""))
     except:  # TODO: Заменить этот перехват любых исключений?
         return None
 
 
-def extractList(contestLists, contestPage):
+def extractList(contestLists: Dict[str, dict], contestPage: str) -> None:
     soup = makeSoup(contestPage)
 
     if soup is None:
@@ -102,7 +106,7 @@ def extractList(contestLists, contestPage):
     printDot()
 
 
-def findContestListsAsync(contestLinks):
+def findContestListsAsync(contestLinks: Set[str]) -> dict:
     contestLists = dict()  # contestPage: { abit }
 
     for contestLink in contestLinks:
@@ -114,7 +118,7 @@ def findContestListsAsync(contestLinks):
 
 
 # Поиск всех конкурсов
-def findContests(spbuSite):
+def findContests(spbuSite: str) -> List[str]:
     contests = list()
 
     for a in makeSoup(spbuSite).find_all("a"):
@@ -126,12 +130,12 @@ def findContests(spbuSite):
     return contests
 
 
-def addPrefixLinkToContests(spbuSite, contests):
+def addPrefixLinkToContests(spbuSite: str, contests: List[str]) -> Set[str]:
     siteDir = spbuSite[:spbuSite.rfind("/")] + "/"
     return set(map(lambda contest: siteDir + contest, contests))
 
 
-def parseSpbu(contests, saveMethods, spbuSite, name, saveDir):
+def parseSpbu(contests: Optional[Set[str]], saveMethods, spbuSite: str, name: str, saveDir: str) -> None:
     logInfo("----- %s -----" % name)
 
     if len(saveMethods) == 0:
