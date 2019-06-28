@@ -1,7 +1,7 @@
 # encoding=utf-8
 
-from threading import Thread
 from queue import Queue
+from threading import Thread
 
 # [(func, (args))]
 taskQueue = Queue()
@@ -19,6 +19,5 @@ MAX_WORKER_COUNT = 5
 
 
 for i in range(MAX_WORKER_COUNT):
-    thread = Thread(target=_worker, name="Worker %d/%d" % (i + 1, MAX_WORKER_COUNT))
-    thread.daemon = True
+    thread = Thread(target=_worker, name="Worker %d/%d" % (i + 1, MAX_WORKER_COUNT), daemon=True)
     thread.start()
