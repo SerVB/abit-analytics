@@ -1,7 +1,7 @@
 # encoding=utf-8
 
 from common_html import makeSoup, soupToRawString, visibleSoupToString
-from common_logging import printDot
+from common_logging import printDot, logInfo, logWarning
 from common_properties import PROPERTY
 from common_task_queue import taskQueue
 
@@ -111,3 +111,44 @@ def findContestListsAsync(contestLinks):
     taskQueue.join()
 
     return contestLists
+
+
+# Поиск всех конкурсов
+def findContests(spbuSite):
+    contests = list()
+
+    for a in makeSoup(spbuSite).find_all("a"):
+        if a.has_attr("href"):
+            contests.append(a["href"])
+
+    del (contests[0])  # Удалить ссылку на предыдущую страницу
+
+    return contests
+
+
+def addPrefixLinkToContests(spbuSite, contests):
+    siteDir = spbuSite[:spbuSite.rfind("/")] + "/"
+    return set(map(lambda contest: siteDir + contest, contests))
+
+
+def parseSpbu(contests, saveMethods, spbuSite, name, saveDir):
+    logInfo("----- %s -----" % name)
+
+    if len(saveMethods) == 0:
+        logWarning("Пустой список методов сохранения.")
+
+    if contests is None:
+        logInfo("Поиск конкурсов.")
+        contests = findContests(spbuSite)  # { contestId }
+        logInfo("Найдено конкурсов: %d." % len(contests))
+
+    contestLinks = addPrefixLinkToContests(spbuSite, contests)
+
+    linkToAbits = findContestListsAsync(contestLinks)  # contestPage: { abit }
+
+    logInfo("Обработано конкурсов: %d." % len(linkToAbits))
+    logInfo("Найдено записей: %d. Готово." % sum(map(len, linkToAbits.values())))
+
+    for saveMethod in saveMethods:
+        saveMethod(linkToAbits, saveDir)
+    logInfo("Сохранено.")
